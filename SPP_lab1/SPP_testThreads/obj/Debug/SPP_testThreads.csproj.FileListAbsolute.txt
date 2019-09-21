@@ -1,7 +1,0 @@
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\bin\Debug\SPP_testThreads.exe.config
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\bin\Debug\SPP_testThreads.exe
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\bin\Debug\SPP_testThreads.pdb
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\obj\Debug\SPP_testThreads.csprojAssemblyReference.cache
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\obj\Debug\SPP_testThreads.csproj.CoreCompileInputs.cache
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\obj\Debug\SPP_testThreads.exe
-C:\Users\dauks\source\repos\SPP_testThreads\SPP_testThreads\obj\Debug\SPP_testThreads.pdb
