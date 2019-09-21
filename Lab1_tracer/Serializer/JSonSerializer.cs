@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using Tracing; 
-using System.Runtime.Serialization; 
-
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Serializer
 {
-    public class JSonSerializer
+    public class JSonSerializer : ISerializer
     {
-        public void Serialize(MethodInfo methodInfo, ThreadInfo threadInfo)
+        public string Serialize (List<ThreadInfo> value)
         {
-            var serializer = new DataContractSerializer(typeof(MethodInfo));
+            return JsonConvert.SerializeObject(value, Formatting.Indented);
         }
+    }
+    
+    interface ISerializer
+    {
+        string Serialize(List<ThreadInfo> value);
     }
 }

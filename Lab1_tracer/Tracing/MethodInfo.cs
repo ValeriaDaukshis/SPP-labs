@@ -10,9 +10,13 @@ namespace Tracing
     [DataContract]
     public class MethodInfo
     {
-        public string Name; 
-        public string ClassName; 
+        [DataMember]
+        public string Name;
+        [DataMember]
+        public string ClassName;
+        [DataMember]
         public long time;
+        [DataMember]
         public List<MethodInfo> methodInfo;
 
         public MethodInfo(string name, string className)

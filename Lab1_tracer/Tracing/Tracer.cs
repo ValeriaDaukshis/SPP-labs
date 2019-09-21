@@ -7,10 +7,10 @@ using Interfaces;
 
 namespace Tracing
 {
-    public class Tracer : ITracer
+    public class Tracer 
     {
-        private TraceResult traceResult;
-        private ConcurrentDictionary<int, ThreadInfo> threadsDictionary;
+        //private TraceResult traceResult;
+        public ConcurrentDictionary<int, ThreadInfo> threadsDictionary { get; }
         private Stopwatch timer;
         private ConcurrentStack<MethodInfo> methodStack;
 
@@ -53,17 +53,11 @@ namespace Tracing
             info.time = fullTime;
             var value = threadsDictionary[Thread.CurrentThread.ManagedThreadId];
             value._time += fullTime;
-        }
-
-
+        } 
         public TraceResult GetTraceResult()
-        { 
-            List<ThreadInfo> result = new List<ThreadInfo>();
-            foreach (KeyValuePair<int, ThreadInfo> keyValue in threadsDictionary)
-            {
-                result.Add(keyValue.Value);
-            }
-            return new TraceResult(threadsDictionary);
+        {
+            TraceResult result = new TraceResult(threadsDictionary);
+            return result;
         }
     }
 }

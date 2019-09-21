@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.IO;
+using System.Threading;  
 using Tracing;
 
 namespace Main
@@ -18,19 +16,12 @@ namespace Main
             threads = new List<Thread>();
             tracer = new Tracer();
             GetMoreThreads();
-            tracer.GetTraceResult();
+            var result = tracer.GetTraceResult();
+            List<ThreadInfo> list2 = tracer.GetTraceResult().GetResultList();
 
-            //var writer = new TWriter();
-            //{
-            //    var formatter = new TXmlSerializer();
-            //    writer.WriteToConsole(formatter.Serialize(tracer.GetTraceResult()));
-            //    writer.WriteToFile(formatter.Serialize(tracer.GetTraceResult()), "XmlTrace.XML");
-            //}
-            //{
-            //    var formatter = new TJsonSerializer();
-            //    writer.WriteToConsole(formatter.Serialize(tracer.GetTraceResult()));
-            //    writer.WriteToFile(formatter.Serialize(tracer.GetTraceResult()), "JsonTrace.json");
-            //}
+            string str = new JSonSerializer().Serialize(list2);
+            Console.WriteLine(str); 
+            
             Console.ReadKey();
         }
 
