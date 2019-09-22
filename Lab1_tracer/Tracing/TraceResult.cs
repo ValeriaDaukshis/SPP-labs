@@ -1,12 +1,15 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using System.Threading;
 
 namespace Tracing
 {
     
     public class TraceResult
     {
+        
+        
         public ConcurrentDictionary<int, ThreadInfo> thread;
         
         public List<ThreadInfo> result;
@@ -14,7 +17,6 @@ namespace Tracing
         {
             thread = threadsDictionary;
             result = new List<ThreadInfo>();
-            //GetResultList();
         }
 
         public List<ThreadInfo> GetResultList()

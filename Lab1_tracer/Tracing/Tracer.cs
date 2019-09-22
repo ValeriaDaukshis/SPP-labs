@@ -23,23 +23,25 @@ namespace Tracing
         public void StartTrace()
         {
             var methodName = new StackTrace().GetFrame(1).GetMethod();
-            string className = methodName.ReflectedType.ToString();
-            int traceId = Thread.CurrentThread.ManagedThreadId;
-            MethodInfo info = new MethodInfo(methodName.Name, className);
-            ThreadInfo threadInfo = new ThreadInfo(traceId);
-            if (!threadsDictionary.ContainsKey(traceId))
+            if (methodName.ReflectedType != null)
             {
-                threadsDictionary.TryAdd(traceId, threadInfo);
-                threadsDictionary[traceId].methodInfo.Add(info);
-            }
-            else
-            {
-                MethodInfo value;
-                methodStack.TryPeek(out value);
-                value.methodInfo.Add(info);
+                string className = methodName.ReflectedType.ToString();
+                int traceId = Thread.CurrentThread.ManagedThreadId; 
+                ThreadInfo threadInfo = new ThreadInfo(traceId);
+                MethodInfo info = new MethodInfo(methodName.Name, className);
+                if (!threadsDictionary.ContainsKey(traceId))
+                {
+                    threadsDictionary.TryAdd(traceId, threadInfo);
+                    threadsDictionary[traceId].MethodInfo.Add(info);
+                }
+                else
+                {
+                    methodStack.TryPeek(out var value);
+                    value.methodInfo.Add(info);
+                } 
+                methodStack.Push(info);
             }
 
-            methodStack.Push(info);
             timer = new Stopwatch();
             timer.Start();
         }
@@ -47,12 +49,11 @@ namespace Tracing
         public void StopTrace()
         {
             timer.Stop();
-            long fullTime = timer.ElapsedMilliseconds;
-            MethodInfo info;
-            methodStack.TryPop(out info);
-            info.time = fullTime;
+            long fullTime = timer.ElapsedMilliseconds; 
+            methodStack.TryPop(out var info);
+            info.Time = fullTime;
             var value = threadsDictionary[Thread.CurrentThread.ManagedThreadId];
-            value._time += fullTime;
+            value.Time += fullTime;
         } 
         public TraceResult GetTraceResult()
         {

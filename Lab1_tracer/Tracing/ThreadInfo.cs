@@ -11,17 +11,17 @@ namespace Tracing
     public class ThreadInfo
     {
         [DataMember]
-        public readonly int _id;
+        public readonly int Id;
         [DataMember]
-        public long _time;
+        public long Time;
         [DataMember]
-        public List<MethodInfo> methodInfo;
+        public List<MethodInfo> MethodInfo;
 
         public ThreadInfo(int id)
         {
-            _id = id;
-            _time = 0;
-            methodInfo = new List<MethodInfo>();
+            Id = id;
+            Time = 0;
+            MethodInfo = new List<MethodInfo>();
         }
     }
 }

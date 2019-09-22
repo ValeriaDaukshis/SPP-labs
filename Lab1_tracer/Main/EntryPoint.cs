@@ -19,10 +19,30 @@ namespace Main
             var result = tracer.GetTraceResult();
             List<ThreadInfo> list2 = tracer.GetTraceResult().GetResultList();
 
-            string str = new JSonSerializer().Serialize(list2);
-            Console.WriteLine(str); 
+            string str2 = new JSonSerializer().Serialize(list2);
+            Console.WriteLine(str2); 
             
-            Console.ReadKey();
+//            string str;
+//            FileStream fin = new FileStream("C:/Users/dauks/source/repos/SPP labs/threads.xml", FileMode.Open);
+//            StreamReader st_fin = new StreamReader(fin);
+//            try
+//            { 
+//                while ((str = st_fin.ReadLine()) != null)
+//                {
+//                    Console.WriteLine(str);
+//                }
+//            }
+// 
+//            catch (IOException exc)
+//            {
+//                Console.WriteLine(exc.Message);
+//            }
+// 
+//            finally
+//            {
+//                st_fin.Close();
+//            }
+            //Console.ReadKey();
         }
 
         static void GetMoreThreads()

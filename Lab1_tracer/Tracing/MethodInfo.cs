@@ -15,7 +15,7 @@ namespace Tracing
         [DataMember]
         public string ClassName;
         [DataMember]
-        public long time;
+        public long Time;
         [DataMember]
         public List<MethodInfo> methodInfo;
 
@@ -23,7 +23,7 @@ namespace Tracing
         {
             Name = name;
             ClassName = className;
-            time = 0;
+            Time = 0;
             methodInfo = new List<MethodInfo>();
         }
     }
