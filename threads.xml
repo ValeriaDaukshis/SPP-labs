@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfThreadResult xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Tracing">
+  <ThreadResult>
+    <Id>3</Id>
+    <MethodInfo>
+      <MethodResult>
+        <ClassName>Main.EntryPoint</ClassName>
+        <MethodInfo>
+          <MethodResult>
+            <ClassName>Main.EntryPoint</ClassName>
+            <MethodInfo />
+            <Name>TestMethod2</Name>
+            <Time>200</Time>
+          </MethodResult>
+        </MethodInfo>
+        <Name>TestMethod1</Name>
+        <Time>200</Time>
+      </MethodResult>
+    </MethodInfo>
+    <Time>400</Time>
+  </ThreadResult>
+  <ThreadResult>
+    <Id>4</Id>
+    <MethodInfo>
+      <MethodResult>
+        <ClassName>Main.EntryPoint</ClassName>
+        <MethodInfo>
+          <MethodResult>
+            <ClassName>Main.EntryPoint</ClassName>
+            <MethodInfo />
+            <Name>TestMethod2</Name>
+            <Time>200</Time>
+          </MethodResult>
+        </MethodInfo>
+        <Name>TestMethod1</Name>
+        <Time>200</Time>
+      </MethodResult>
+    </MethodInfo>
+    <Time>400</Time>
+  </ThreadResult>
+</ArrayOfThreadResult>
