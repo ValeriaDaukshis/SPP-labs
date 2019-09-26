@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics; 
 using System.Threading;
@@ -7,58 +6,66 @@ using Interfaces;
 
 namespace Tracing
 {
-    public class Tracer 
+    public class Tracer : ITracer
     {
-        //private TraceResult traceResult;
-        public ConcurrentDictionary<int, ThreadInfo> threadsDictionary { get; }
-        private Stopwatch timer;
-        private ConcurrentStack<MethodInfo> methodStack;
-
+        private TraceResult _traceResult;
+        private ConcurrentDictionary<int, List<MethodResult>> _methodStack;
+        private Stopwatch _timer;
         public Tracer()
         {
-            methodStack = new ConcurrentStack<MethodInfo>();
-            threadsDictionary = new ConcurrentDictionary<int, ThreadInfo>();
+            _traceResult = new TraceResult();
+            _methodStack = new ConcurrentDictionary<int, List<MethodResult>>();
         }
 
         public void StartTrace()
-        {
+        { 
             var methodName = new StackTrace().GetFrame(1).GetMethod();
             if (methodName.ReflectedType != null)
             {
                 string className = methodName.ReflectedType.ToString();
                 int traceId = Thread.CurrentThread.ManagedThreadId; 
-                ThreadInfo threadInfo = new ThreadInfo(traceId);
-                MethodInfo info = new MethodInfo(methodName.Name, className);
-                if (!threadsDictionary.ContainsKey(traceId))
+                ThreadResult threadInfo = new ThreadResult(traceId);
+                MethodResult info = new MethodResult(methodName.Name, className);
+               
+                if (!_traceResult.ThreadsDictionary.ContainsKey(traceId))
                 {
-                    threadsDictionary.TryAdd(traceId, threadInfo);
-                    threadsDictionary[traceId].MethodInfo.Add(info);
+                    _traceResult.ThreadsDictionary.TryAdd(traceId, threadInfo);
+                    _traceResult.ThreadsDictionary[traceId].MethodInfo.Add(info);
                 }
                 else
                 {
-                    methodStack.TryPeek(out var value);
-                    value.methodInfo.Add(info);
-                } 
-                methodStack.Push(info);
-            }
+                    var value = _methodStack[traceId][0];
+                    value.MethodInfo.Add(info);
+                }
 
-            timer = new Stopwatch();
-            timer.Start();
+                if (!_methodStack.ContainsKey(traceId))
+                {
+                    _methodStack.TryAdd(traceId, new List<MethodResult>());
+                    _methodStack[traceId].Add(info);
+                }
+                else
+                {
+                    _methodStack[traceId].Insert(0, info); 
+                }
+            } 
+            _timer = new Stopwatch();
+            _timer.Start();
         }
 
         public void StopTrace()
         {
-            timer.Stop();
-            long fullTime = timer.ElapsedMilliseconds; 
-            methodStack.TryPop(out var info);
+            _timer.Stop();
+            int traceId = Thread.CurrentThread.ManagedThreadId; 
+            long fullTime = _timer.ElapsedMilliseconds;
+            var info = _methodStack[traceId][0];
+            _methodStack[traceId].RemoveAt(0);
             info.Time = fullTime;
-            var value = threadsDictionary[Thread.CurrentThread.ManagedThreadId];
+            var value = _traceResult.ThreadsDictionary[traceId];
             value.Time += fullTime;
         } 
         public TraceResult GetTraceResult()
         {
-            TraceResult result = new TraceResult(threadsDictionary);
-            return result;
+            return _traceResult;
         }
     }
 }

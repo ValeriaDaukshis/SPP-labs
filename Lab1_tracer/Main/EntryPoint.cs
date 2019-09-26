@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;  
 using Tracing;
 
@@ -15,37 +16,15 @@ namespace Main
         {
             threads = new List<Thread>();
             tracer = new Tracer();
-            GetMoreThreads();
-            var result = tracer.GetTraceResult();
-            List<ThreadInfo> list2 = tracer.GetTraceResult().GetResultList();
-
-            string str2 = new JSonSerializer().Serialize(list2);
-            Console.WriteLine(str2); 
+            CreateThreads();
+            var list = tracer.GetTraceResult().ThreadsDictionary.Values.ToList();  
             
-//            string str;
-//            FileStream fin = new FileStream("C:/Users/dauks/source/repos/SPP labs/threads.xml", FileMode.Open);
-//            StreamReader st_fin = new StreamReader(fin);
-//            try
-//            { 
-//                while ((str = st_fin.ReadLine()) != null)
-//                {
-//                    Console.WriteLine(str);
-//                }
-//            }
-// 
-//            catch (IOException exc)
-//            {
-//                Console.WriteLine(exc.Message);
-//            }
-// 
-//            finally
-//            {
-//                st_fin.Close();
-//            }
-            //Console.ReadKey();
+            Console.WriteLine(new JSonSerializer().Serialize(list));
+            string path = new XmlSerializer().Serialize(list);
+            Console.WriteLine(FileOutput.ReadXmlFile(path));
         }
 
-        static void GetMoreThreads()
+        private static void CreateThreads()
         {
             for (int i = 0; i < 2; i++)
             {
@@ -54,9 +33,9 @@ namespace Main
                 thread.Start();
             }
 
-            foreach (Thread t in threads)
+            foreach (Thread thread in threads)
             {
-                t.Join();
+                thread.Join();
             }
         }
 

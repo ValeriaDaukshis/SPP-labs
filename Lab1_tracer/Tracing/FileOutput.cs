@@ -1,14 +1,32 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 
 namespace Tracing
-{
-   
-        public class FileOutput 
+{ 
+    public static class FileOutput 
+    { 
+        public static string ReadXmlFile(string path)
         {
-            public void OutputData(string text, string fileFormat)
+            StringBuilder xmlInfo = new StringBuilder();
+            string str;
+            using(FileStream fin = new FileStream(path, FileMode.Open))
             {
-                File.WriteAllText(fileFormat, text); 
+                StreamReader st_fin = new StreamReader(fin);
+                try
+                {
+                    while ((str =st_fin.ReadLine())!= null)
+                    {
+                        xmlInfo.Append($"{str}\n");
+                    }
+                } 
+                catch (IOException e)
+                {
+                    Console.WriteLine(e.Message); 
+                }
             }
+
+            return xmlInfo.ToString();
         }
-    
+    } 
 }

@@ -6,15 +6,17 @@ namespace Tracing
 {
     public class XmlSerializer
     { 
-        public void Serialize(List<ThreadInfo> list)
+        public string Serialize(List<ThreadResult> list)
         {
-            var serializer = new DataContractSerializer(typeof(List<ThreadInfo>));
+            var serializer = new DataContractSerializer(typeof(List<ThreadResult>));
             XmlWriterSettings settings = new XmlWriterSettings() {Indent = true};
-            using(XmlWriter writer = XmlWriter.Create("C:/Users/dauks/source/repos/SPP labs/threads.xml", settings))
+            string outputFileName = "threads.xml";
+            using(XmlWriter writer = XmlWriter.Create(outputFileName, settings))
             {
-                serializer.WriteObject(writer, list); 
-            } 
-            
+                serializer.WriteObject(writer, list);
+            }
+
+            return outputFileName;
         }
     }
 }

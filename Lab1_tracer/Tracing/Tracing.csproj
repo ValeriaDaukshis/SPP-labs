@@ -48,8 +48,6 @@
     <Compile Include="FileOutput.cs" />
     <Compile Include="ITracer.cs" />
     <Compile Include="JSonSerializer.cs" />
-    <Compile Include="MethodInfo.cs" />
-    <Compile Include="ThreadInfo.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TraceResult.cs" />
