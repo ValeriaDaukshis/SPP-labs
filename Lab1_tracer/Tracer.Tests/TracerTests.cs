@@ -86,9 +86,7 @@ namespace Tracer.Tests
 
     public class TestClass
     {
-        public Tracing.Tracer _tracer; 
-        
-        
+        public Tracing.Tracer _tracer;  
         public void InitializeTracer()
         {
             _tracer = new Tracing.Tracer(); 
