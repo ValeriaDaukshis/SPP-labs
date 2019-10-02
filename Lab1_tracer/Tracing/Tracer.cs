@@ -6,6 +6,12 @@ using Interfaces;
 
 namespace Tracing
 {
+    //logic
+    // в трэйсере только методы с таймером
+    // логика помещается в TraceLogic, там тоже есть startTrace, StopTrace, GetTraceResult
+    // сам dictionary в traceResult
+    // компонуем адаптером
+    
     public class Tracer : ITracer
     {
         private TraceResult _traceResult;

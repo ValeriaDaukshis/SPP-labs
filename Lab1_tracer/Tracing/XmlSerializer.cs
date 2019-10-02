@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace Tracing
 {
-    public class XmlSerializer
+    public class XmlSerializer : ISerializer
     { 
         public string Serialize(List<ThreadResult> list)
         {
@@ -16,7 +18,17 @@ namespace Tracing
                 serializer.WriteObject(writer, list);
             }
 
-            return outputFileName;
+            return FileOutput.ReadXmlFile(outputFileName);
+
+//            MemoryStream memoryStream = new MemoryStream();
+//
+//            var xmlSerializer = new XmlSerializer(typeof(List<ThreadResult>));
+//
+//            xmlSerializer.Serialize(memoryStream, list);
+//            memoryStream.Position = 0;
+//
+//            StreamReader sr = new StreamReader(memoryStream);
+//            return sr.ReadToEnd();
         }
     }
 }

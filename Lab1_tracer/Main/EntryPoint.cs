@@ -17,10 +17,8 @@ namespace Main
             tracer = new Tracer();
             CreateThreads();
             var list = tracer.GetTraceResult().ThreadsDictionary.Values.ToList();  
-            
-            Console.WriteLine(new JSonSerializer().Serialize(list));
-            string path = new XmlSerializer().Serialize(list);
-            Console.WriteLine(FileOutput.ReadXmlFile(path));
+            new ConsoleWriter().WriteFile(new XmlSerializer(), list);
+            new ConsoleWriter().WriteFile(new JSonSerializer(), list);
         }
 
         private static void CreateThreads()

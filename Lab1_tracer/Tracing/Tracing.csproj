@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConsoleWriter.cs" />
     <Compile Include="FileOutput.cs" />
+    <Compile Include="ISerializer.cs" />
     <Compile Include="ITracer.cs" />
     <Compile Include="JSonSerializer.cs" />
     <Compile Include="Tracer.cs" />
