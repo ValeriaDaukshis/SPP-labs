@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Tracing;
+using Tracing.Interfaces;
+using Tracing.Tracing;
 
-namespace Tracing
+namespace Main
 {
     public class ConsoleWriter 
     {

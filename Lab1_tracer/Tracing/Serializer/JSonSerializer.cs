@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Newtonsoft.Json; 
+using Newtonsoft.Json;
+using Tracing.Interfaces;
+using Tracing.Tracing;
 using Formatting = Newtonsoft.Json.Formatting;
 
-namespace Tracing 
+namespace Tracing.Serializer 
 {
     public class JSonSerializer : ISerializer
     {

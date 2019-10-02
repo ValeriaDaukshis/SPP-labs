@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Tracing
+namespace Tracing.Tracing
 {  
     public class TraceResult
     {
-        public ConcurrentDictionary<int, ThreadResult> ThreadsDictionary;// { get; } 
+        public readonly ConcurrentDictionary<int, ThreadResult> ThreadsDictionary;
 
         public TraceResult()
         {

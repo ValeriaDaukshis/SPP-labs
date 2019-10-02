@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Tracing
+namespace Tracing.Serializer
 { 
     public static class FileOutput 
     { 

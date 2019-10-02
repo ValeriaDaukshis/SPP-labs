@@ -1,26 +1,21 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics; 
+using System.Diagnostics;
 using System.Threading;
-using Interfaces;
+using Tracing.Interfaces;
 
-namespace Tracing
+namespace Tracing.Tracing
 {
-    //logic
-    // в трэйсере только методы с таймером
-    // логика помещается в TraceLogic, там тоже есть startTrace, StopTrace, GetTraceResult
-    // сам dictionary в traceResult
-    // компонуем адаптером
-    
     public class Tracer : ITracer
     {
         private TraceResult _traceResult;
         private ConcurrentDictionary<int, List<MethodResult>> _methodStack;
-        private Stopwatch _timer;
-        public Tracer()
+        private IStopWatcher _timer;
+        public Tracer(IStopWatcher timer)
         {
             _traceResult = new TraceResult();
             _methodStack = new ConcurrentDictionary<int, List<MethodResult>>();
+            _timer = timer;
         }
 
         public void StartTrace()
@@ -54,15 +49,15 @@ namespace Tracing
                     _methodStack[traceId].Insert(0, info); 
                 }
             } 
-            _timer = new Stopwatch();
-            _timer.Start();
+            _timer.StartTrace();
         }
 
         public void StopTrace()
         {
-            _timer.Stop();
+            _timer.StopTrace();
+            long fullTime = _timer.GetTraceResult();
+            
             int traceId = Thread.CurrentThread.ManagedThreadId; 
-            long fullTime = _timer.ElapsedMilliseconds;
             var info = _methodStack[traceId][0];
             _methodStack[traceId].RemoveAt(0);
             info.Time = fullTime;

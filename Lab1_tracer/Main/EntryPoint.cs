@@ -1,22 +1,25 @@
-﻿using System;
+﻿
 using System.Collections.Generic; 
 using System.Linq;
 using System.Threading;  
 using Tracing;
+using Tracing.Serializer;
+using Tracing.TimeCounters;
+using Tracing.Tracing;
 
 namespace Main
 {
-    class EntryPoint
+    static class EntryPoint
     {
-        private static Tracer tracer;
-        private static List<Thread> threads;
+        private static Tracer _tracer;
+        private static List<Thread> _threads;
 
         static void Main(string[] args)
         {
-            threads = new List<Thread>();
-            tracer = new Tracer();
+            _threads = new List<Thread>();
+            _tracer = new Tracer(new StopWatcher());
             CreateThreads();
-            var list = tracer.GetTraceResult().ThreadsDictionary.Values.ToList();  
+            var list = _tracer.GetTraceResult().ThreadsDictionary.Values.ToList();  
             new ConsoleWriter().WriteFile(new XmlSerializer(), list);
             new ConsoleWriter().WriteFile(new JSonSerializer(), list);
         }
@@ -26,11 +29,11 @@ namespace Main
             for (int i = 0; i < 2; i++)
             {
                 Thread thread = new Thread(TestMethod1);
-                threads.Add(thread);
+                _threads.Add(thread);
                 thread.Start();
             }
 
-            foreach (Thread thread in threads)
+            foreach (Thread thread in _threads)
             {
                 thread.Join();
             }
@@ -38,17 +41,17 @@ namespace Main
 
         private static void TestMethod1()
         {
-            tracer.StartTrace();
+            _tracer.StartTrace();
             Thread.Sleep(1000);
             TestMethod2();
-            tracer.StopTrace();
+            _tracer.StopTrace();
         }
 
         private static void TestMethod2()
         {
-            tracer.StartTrace();
+            _tracer.StartTrace();
             Thread.Sleep(200); 
-            tracer.StopTrace();
+            _tracer.StopTrace();
         }
     }
 }

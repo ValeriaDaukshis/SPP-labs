@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading;
 using NUnit.Framework;
+using Tracing;
+using Tracing.TimeCounters;
 
 namespace Tracer.Tests
 {
@@ -86,10 +88,10 @@ namespace Tracer.Tests
 
     public class TestClass
     {
-        public Tracing.Tracer _tracer;  
+        public Tracing.Tracing.Tracer _tracer;  
         public void InitializeTracer()
         {
-            _tracer = new Tracing.Tracer(); 
+            _tracer = new Tracing.Tracing.Tracer(new StopWatcher()); 
             Method1();
         }
         

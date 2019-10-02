@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Tracing.Tracing;
 
-namespace Tracing
+namespace Tracing.Interfaces
 {
     public interface ISerializer
     { 
