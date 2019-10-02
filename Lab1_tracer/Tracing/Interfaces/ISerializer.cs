@@ -5,6 +5,6 @@ namespace Tracing.Interfaces
 {
     public interface ISerializer
     { 
-        string Serialize(List<ThreadResult> list);
+        string Serialize(List<TraceResult.ThreadResult> list);
     }
 }

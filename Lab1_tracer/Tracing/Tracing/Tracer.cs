@@ -8,13 +8,14 @@ namespace Tracing.Tracing
 {
     public class Tracer : ITracer
     {
-        private TraceResult _traceResult;
-        private ConcurrentDictionary<int, List<MethodResult>> _methodStack;
-        private IStopWatcher _timer;
+        private readonly TraceResult _traceResult;
+        private readonly ConcurrentDictionary<int, List<TraceResult.MethodResult>> _methodStack;
+        private readonly IStopWatcher _timer;
+        
         public Tracer(IStopWatcher timer)
         {
             _traceResult = new TraceResult();
-            _methodStack = new ConcurrentDictionary<int, List<MethodResult>>();
+            _methodStack = new ConcurrentDictionary<int, List<TraceResult.MethodResult>>();
             _timer = timer;
         }
 
@@ -25,8 +26,8 @@ namespace Tracing.Tracing
             {
                 string className = methodName.ReflectedType.ToString();
                 int traceId = Thread.CurrentThread.ManagedThreadId; 
-                ThreadResult threadInfo = new ThreadResult(traceId);
-                MethodResult info = new MethodResult(methodName.Name, className);
+                TraceResult.ThreadResult threadInfo = new TraceResult.ThreadResult(traceId);
+                TraceResult.MethodResult info = new TraceResult.MethodResult(methodName.Name, className);
                
                 if (!_traceResult.ThreadsDictionary.ContainsKey(traceId))
                 {
@@ -41,7 +42,7 @@ namespace Tracing.Tracing
 
                 if (!_methodStack.ContainsKey(traceId))
                 {
-                    _methodStack.TryAdd(traceId, new List<MethodResult>());
+                    _methodStack.TryAdd(traceId, new List<TraceResult.MethodResult>());
                     _methodStack[traceId].Add(info);
                 }
                 else
@@ -59,8 +60,8 @@ namespace Tracing.Tracing
             
             int traceId = Thread.CurrentThread.ManagedThreadId; 
             var info = _methodStack[traceId][0];
-            _methodStack[traceId].RemoveAt(0);
             info.Time = fullTime;
+            _methodStack[traceId].RemoveAt(0);
             var value = _traceResult.ThreadsDictionary[traceId];
             value.Time += fullTime;
         } 

@@ -9,7 +9,7 @@ namespace Tracing.Serializer
 {
     public class JSonSerializer : ISerializer
     {
-        public string Serialize(List<ThreadResult> list)
+        public string Serialize(List<TraceResult.ThreadResult> list)
         {
             string jsonInfo;
             string outputFileName = "threads.json";

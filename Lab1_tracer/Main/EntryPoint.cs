@@ -1,8 +1,8 @@
 ﻿
 using System.Collections.Generic; 
 using System.Linq;
-using System.Threading;  
-using Tracing;
+using System.Threading; 
+using Tracing.Interfaces;
 using Tracing.Serializer;
 using Tracing.TimeCounters;
 using Tracing.Tracing;
@@ -11,7 +11,7 @@ namespace Main
 {
     static class EntryPoint
     {
-        private static Tracer _tracer;
+        private static ITracer _tracer;
         private static List<Thread> _threads;
 
         static void Main(string[] args)
