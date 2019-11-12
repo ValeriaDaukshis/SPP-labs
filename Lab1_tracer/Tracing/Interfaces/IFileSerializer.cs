@@ -3,7 +3,7 @@ using Tracing.Tracing;
 
 namespace Tracing.Interfaces
 {
-    public interface ISerializer
+    public interface IFileSerializer
     { 
         string Serialize(List<TraceResult.ThreadResult> list);
     }

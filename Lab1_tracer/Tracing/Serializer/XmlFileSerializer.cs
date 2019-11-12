@@ -6,8 +6,9 @@ using Tracing.Tracing;
 
 namespace Tracing.Serializer
 {
-    public class XmlSerializer : ISerializer
+    public class XmlFileSerializer : IFileSerializer
     { 
+        //сериализация в xml. В файле все в фигурных скобках
         public string Serialize(List<TraceResult.ThreadResult> list)
         {
             var serializer = new DataContractSerializer(typeof(List<TraceResult.ThreadResult>));

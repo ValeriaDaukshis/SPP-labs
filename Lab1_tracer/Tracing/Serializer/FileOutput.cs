@@ -9,13 +9,12 @@ namespace Tracing.Serializer
         public static string ReadXmlFile(string path)
         {
             StringBuilder xmlInfo = new StringBuilder();
-            string str;
-            using(FileStream fin = new FileStream(path, FileMode.Open))
+            using(StreamReader reader = new StreamReader(new FileStream(path, FileMode.Open)))
             {
-                StreamReader st_fin = new StreamReader(fin);
                 try
                 {
-                    while ((str =st_fin.ReadLine())!= null)
+                    string str;
+                    while ((str =reader.ReadLine())!= null)
                     {
                         xmlInfo.Append($"{str}\n");
                     }

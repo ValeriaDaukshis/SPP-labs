@@ -1,8 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using NUnit.Framework;
-using Tracing;
-using Tracing.TimeCounters;
 
 namespace Tracer.Tests
 {
@@ -12,31 +11,51 @@ namespace Tracer.Tests
         [Test]
         public void Tracer_TestMethod1TimeLimit()
         {
-            long expected = 201; 
+            long expected = 0; 
             var testClass = new TestClass();
             testClass.InitializeTracer();
             var actual = testClass._tracer.GetTraceResult().ThreadsDictionary.Values.ToList()[0].MethodInfo[0].Time;
-            Assert.IsTrue(actual <= expected);
+            Assert.IsTrue(actual >= expected);
+        }
+        
+        [Test]
+        public void Tracer_TestNumOfThreads()
+        {
+            int expected = 3; 
+            var testClass = new TestClass();
+            testClass.InitializeTracer();
+            int actual = testClass._threads.Count;
+            Assert.AreEqual(actual, expected);
+        }
+        
+        [Test]
+        public void Tracer_TestNumOfMethods()
+        {
+            int expected = 3; 
+            var testClass = new TestClass();
+            testClass.InitializeTracer();
+            var actual = testClass._tracer.GetTraceResult().ThreadsDictionary.Values.Count;
+            Assert.AreEqual(expected, actual);
         }
         
         [Test]
         public void Tracer_TestMethod2TimeLimit()
         {
-            long expected = 101; 
+            long expected = 0; 
             var testClass = new TestClass();
             testClass.InitializeTracer();
             var actual = testClass._tracer.GetTraceResult().ThreadsDictionary.Values.ToList()[0].MethodInfo[0].MethodInfo[0].Time;
-            Assert.IsTrue(actual <= expected);
+            Assert.IsTrue(actual >= expected);
         }
         
         [Test]
         public void Tracer_TestMethod3TimeLimit()
         {
-            long expected = 21; 
+            long expected = 0; 
             var testClass = new TestClass();
             testClass.InitializeTracer();
             var actual = testClass._tracer.GetTraceResult().ThreadsDictionary.Values.ToList()[0].MethodInfo[0].MethodInfo[0].MethodInfo[0].Time;
-            Assert.IsTrue(actual <= expected);
+            Assert.IsTrue(actual >= expected);
         } 
         
         [Test]
@@ -88,14 +107,31 @@ namespace Tracer.Tests
 
     public class TestClass
     {
-        public Tracing.Tracing.Tracer _tracer;  
+        public Tracing.Tracing.Tracer _tracer;
+        public List<Thread> _threads;
         public void InitializeTracer()
         {
-            _tracer = new Tracing.Tracing.Tracer(new StopWatcher()); 
-            Method1();
+            _tracer = new Tracing.Tracing.Tracer(); 
+            _threads = new List<Thread>();
+            CreateThreads();
         }
         
-        private  void Method1()
+        private void CreateThreads()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Thread thread = new Thread(Method1);
+                _threads.Add(thread);
+                thread.Start();
+            }
+
+            foreach (Thread thread in _threads)
+            {
+                thread.Join();
+            }
+        }
+        
+        private void Method1()
         {
             _tracer.StartTrace();
             Thread.Sleep(100);

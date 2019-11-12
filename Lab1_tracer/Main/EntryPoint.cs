@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading; 
 using Tracing.Interfaces;
 using Tracing.Serializer;
-using Tracing.TimeCounters;
 using Tracing.Tracing;
 
 namespace Main
@@ -17,15 +16,17 @@ namespace Main
         static void Main(string[] args)
         {
             _threads = new List<Thread>();
-            _tracer = new Tracer(new StopWatcher());
+            _tracer = new Tracer();
             CreateThreads();
             var list = _tracer.GetTraceResult().ThreadsDictionary.Values.ToList();  
-            new ConsoleWriter().WriteFile(new XmlSerializer(), list);
-            new ConsoleWriter().WriteFile(new JSonSerializer(), list);
+            
+            new ConsoleWriter().WriteFile(new XmlFileSerializer(), list);
+            new ConsoleWriter().WriteFile(new JSonFileSerializer(), list);
         }
 
         private static void CreateThreads()
         {
+            // создаем многопоточность. Количество потоков - 2
             for (int i = 0; i < 2; i++)
             {
                 Thread thread = new Thread(TestMethod1);
@@ -33,6 +34,7 @@ namespace Main
                 thread.Start();
             }
 
+            // объединяем потоки в 1. Это в самом конце выполняется
             foreach (Thread thread in _threads)
             {
                 thread.Join();

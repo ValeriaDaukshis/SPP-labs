@@ -9,14 +9,17 @@ namespace Tracing.Tracing
     public class Tracer : ITracer
     {
         private readonly TraceResult _traceResult;
-        private readonly ConcurrentDictionary<int, List<TraceResult.MethodResult>> _methodStack;
-        private readonly IStopWatcher _timer;
+        //словарь(ключ - значение), где ключ - trace id (идентификатор потока(смотреть в main класс entryPoint))
+        // значение - стэк методов
+        private readonly ConcurrentDictionary<int, Stack<TraceResult.MethodResult>> _methodStack;
+        // класс для замера времени выполнения
+        private readonly Stopwatch _timer;
         
-        public Tracer(IStopWatcher timer)
+        public Tracer()
         {
             _traceResult = new TraceResult();
-            _methodStack = new ConcurrentDictionary<int, List<TraceResult.MethodResult>>();
-            _timer = timer;
+            _methodStack = new ConcurrentDictionary<int, Stack<TraceResult.MethodResult>>();
+            _timer = new Stopwatch();
         }
 
         public void StartTrace()
@@ -36,32 +39,32 @@ namespace Tracing.Tracing
                 }
                 else
                 {
-                    var value = _methodStack[traceId][0];
+                    var value = _methodStack[traceId].Peek();
                     value.MethodInfo.Add(info);
                 }
 
                 if (!_methodStack.ContainsKey(traceId))
                 {
-                    _methodStack.TryAdd(traceId, new List<TraceResult.MethodResult>());
-                    _methodStack[traceId].Add(info);
+                    _methodStack.TryAdd(traceId, new Stack<TraceResult.MethodResult>());
+                    _methodStack[traceId].Push(info);
                 }
                 else
                 {
-                    _methodStack[traceId].Insert(0, info); 
+                    _methodStack[traceId].Push(info); 
                 }
             } 
-            _timer.StartTrace();
+            _timer.Start();
         }
 
         public void StopTrace()
         {
-            _timer.StopTrace();
-            long fullTime = _timer.GetTraceResult();
+            _timer.Stop();
+            long fullTime = _timer.ElapsedMilliseconds;
             
             int traceId = Thread.CurrentThread.ManagedThreadId; 
-            var info = _methodStack[traceId][0];
+            var info = _methodStack[traceId].Peek();
             info.Time = fullTime;
-            _methodStack[traceId].RemoveAt(0);
+            _methodStack[traceId].Pop();
             var value = _traceResult.ThreadsDictionary[traceId];
             value.Time += fullTime;
         } 

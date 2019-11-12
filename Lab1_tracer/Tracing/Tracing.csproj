@@ -45,14 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\ISerializer.cs" />
-    <Compile Include="Interfaces\IStopWatcher.cs" />
+    <Compile Include="Interfaces\IFileSerializer.cs" />
     <Compile Include="Interfaces\ITracer.cs" />
     <Compile Include="Serializer\FileOutput.cs" />
-    <Compile Include="Serializer\JSonSerializer.cs" />
-    <Compile Include="Serializer\XmlSerializer.cs" />
+    <Compile Include="Serializer\JSonFileSerializer.cs" />
+    <Compile Include="Serializer\XmlFileSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeCounters\StopWatcher.cs" />
     <Compile Include="Tracing\Tracer.cs" />
     <Compile Include="Tracing\TraceResult.cs" />
   </ItemGroup>

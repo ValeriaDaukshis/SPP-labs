@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Tracing.Interfaces;
 
 namespace Tracing.Tracing
 {
@@ -14,6 +13,8 @@ namespace Tracing.Tracing
             ThreadsDictionary = new ConcurrentDictionary<int, ThreadResult>();
         }
 
+        // в [] - это атрибуты. Они нужны для сериализации(сохранение в файл с указанием полей и значений см файлы в папке serializer)
+        // в 
         [DataContract]
         public class ThreadResult
         {
